@@ -11,9 +11,11 @@ public class GameManager : MonoBehaviour {
     public Material grass;
 
     public float timeToGameOver = 10f;
-
-    public AudioClip gameWonMusic;
+    
     private AudioSource audioSource;
+    bool isWinningMusicPlaying = false;
+
+    public GameObject WallMainObject;
 
 	// Use this for initialization
 	void Start () {
@@ -41,12 +43,19 @@ public class GameManager : MonoBehaviour {
             ambientLight.enabled = true;
             floor.GetComponent<Renderer>().material = grass;
 
-            if (!audioSource.isPlaying)
+            if (!isWinningMusicPlaying)
             {
+                isWinningMusicPlaying = true;
                 audioSource.Play();
+                Invoke("DeactivateAllWallsAndImages", 4f);
             }
         }
 	}
+
+    private void DeactivateAllWallsAndImages()
+    {
+        WallMainObject.SetActiveRecursively(false);
+    }
 
     private bool GameWon()
     {

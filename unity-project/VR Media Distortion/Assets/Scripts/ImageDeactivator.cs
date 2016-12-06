@@ -24,6 +24,8 @@ public class ImageDeactivator : MonoBehaviour {
     public AudioClip deactivationSound;
     public AudioClip turnOnSound;
 
+    public AudioClip[] newsSounds;
+
     private AudioSource audioSource;
 
     // Use this for initialization
@@ -35,6 +37,9 @@ public class ImageDeactivator : MonoBehaviour {
         if (audioSource != null)
         {
             // this means we have a "news speaker" audio
+            int randomIndex = Random.Range(0, newsSounds.Length - 1);
+            AudioClip randomClip = newsSounds[randomIndex];
+            audioSource.clip = randomClip;
             audioSource.Play();
         }
 
