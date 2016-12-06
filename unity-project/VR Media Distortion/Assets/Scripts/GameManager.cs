@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
     public WallMover[] walls;
     public Material grass;
 
+    public float timeToGameOver = 10f;
+
 	// Use this for initialization
 	void Start () {
         GameObject[] imageObjects = GameObject.FindGameObjectsWithTag("Image");
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour {
             images.Add(obj.GetComponent<ImageDeactivator>());
         }
         ambientLight.enabled = false;
+
+        Invoke("GameOver", timeToGameOver);
 	}
 	
 	// Update is called once per frame
@@ -42,5 +46,13 @@ public class GameManager : MonoBehaviour {
                 return false;
         }
         return true;
+    }
+
+    private void GameOver()
+    {
+        foreach (ImageDeactivator img in images)
+        {
+            img.SetGameOver();
+        }
     }
 }

@@ -15,8 +15,11 @@ public class ImageDeactivator : MonoBehaviour {
     private int curLives;
 
     public bool activated = true;
+    public bool isGameOver = false;
 
     public ImageManager imageManager;
+
+    public Material GameOverMaterial;
 
     // Use this for initialization
     void Start () {
@@ -28,7 +31,7 @@ public class ImageDeactivator : MonoBehaviour {
 
     private void ChangeImage()
     {
-        if (activated)
+        if (activated && !isGameOver)
         {
             Material mat = imageManager.GetRandomMaterial();
             GetComponent<Renderer>().material = mat;
@@ -42,7 +45,7 @@ public class ImageDeactivator : MonoBehaviour {
 
     public void Deactivate()
     {
-        if (activated)
+        if (activated && !isGameOver)
         {
             activated = false;
             --curLives;
@@ -61,11 +64,17 @@ public class ImageDeactivator : MonoBehaviour {
 
     private void Activate()
     {
-        if (!activated && curLives > 0)
+        if (!activated && curLives > 0 && !isGameOver)
         {
             activated = true;
             gameObject.GetComponent<Renderer>().material.color = Color.white;
             gameObject.GetComponentInChildren<Light>().enabled = true;
         }
+    }
+
+    public void SetGameOver()
+    {
+        GetComponent<Renderer>().material = GameOverMaterial;
+        isGameOver = true;
     }
 }
