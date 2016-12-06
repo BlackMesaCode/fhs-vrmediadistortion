@@ -12,8 +12,13 @@ public class GameManager : MonoBehaviour {
 
     public float timeToGameOver = 10f;
 
+    public AudioClip gameWonMusic;
+    private AudioSource audioSource;
+
 	// Use this for initialization
 	void Start () {
+        audioSource = GetComponent<AudioSource>();
+
         GameObject[] imageObjects = GameObject.FindGameObjectsWithTag("Image");
         images = new List<ImageDeactivator>();
         foreach (GameObject obj in imageObjects)
@@ -35,6 +40,11 @@ public class GameManager : MonoBehaviour {
             }
             ambientLight.enabled = true;
             floor.GetComponent<Renderer>().material = grass;
+
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
         }
 	}
 
@@ -44,6 +54,13 @@ public class GameManager : MonoBehaviour {
         {
             if (img.activated)
                 return false;
+        }
+
+        // Make sure all Images won't become active again
+        foreach (ImageDeactivator img in images)
+        {
+            img.activated = false;
+            img.maxLives = 0;
         }
         return true;
     }
