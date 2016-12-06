@@ -13,6 +13,8 @@ public class WallMover : MonoBehaviour {
 
     private float winningSeqCurSpeed;
 
+    private bool isStarted = false;
+
 	// Use this for initialization
 	void Start () {
         winningSeqCurSpeed = winningSeqSpeed;
@@ -20,12 +22,16 @@ public class WallMover : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!isInWinningSequence)
+        if (isStarted)
         {
-            MoveToTarget();
-        } else
-        {
-            WinningSequence();
+            if (!isInWinningSequence)
+            {
+                MoveToTarget();
+            }
+            else
+            {
+                WinningSequence();
+            }
         }
     }
 
@@ -49,5 +55,10 @@ public class WallMover : MonoBehaviour {
         Vector3 newTarget = new Vector3(transform.position.x, winningSequenceYPosition, transform.position.z);
         Vector3 newPosition = Vector3.MoveTowards(transform.position, newTarget, step);
         transform.position = newPosition;
+    }
+
+    public void StartMoving()
+    {
+        isStarted = true;
     }
 }

@@ -32,18 +32,6 @@ public class ImageDeactivator : MonoBehaviour {
     void Start () {
         curLives = maxLives;
         imageManager = GameObject.FindWithTag("ImageManager").GetComponent<ImageManager>();
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource != null)
-        {
-            // this means we have a "news speaker" audio
-            int randomIndex = Random.Range(0, newsSounds.Length - 1);
-            AudioClip randomClip = newsSounds[randomIndex];
-            audioSource.clip = randomClip;
-            audioSource.Play();
-        }
-
-        InvokeRepeating("ChangeImage", 0f, Random.Range(minTimeImageChange, maxTimeImageChange));
 	}
 
     private void ChangeImage()
@@ -105,5 +93,20 @@ public class ImageDeactivator : MonoBehaviour {
     {
         GetComponent<Renderer>().material = GameOverMaterial;
         isGameOver = true;
+    }
+
+    public void StartImageAnim()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource != null)
+        {
+            // this means we have a "news speaker" audio
+            int randomIndex = Random.Range(0, newsSounds.Length - 1);
+            AudioClip randomClip = newsSounds[randomIndex];
+            audioSource.clip = randomClip;
+            audioSource.Play();
+        }
+
+        InvokeRepeating("ChangeImage", 0f, Random.Range(minTimeImageChange, maxTimeImageChange));
     }
 }

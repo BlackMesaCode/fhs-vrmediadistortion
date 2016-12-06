@@ -22,6 +22,12 @@ public class ImageHitDetector : MonoBehaviour {
         {
             currentTarget.GetComponent<ImageDeactivator>().Deactivate();
         }
+        TV tv = currentTarget.GetComponent<TV>();
+        if (tv != null)
+        {
+            Debug.Log("Tv hit");
+            tv.Activate();
+        }
     }
 
     private void ImageHitDetector_DestinationMarkerEnter(object sender, DestinationMarkerEventArgs e)

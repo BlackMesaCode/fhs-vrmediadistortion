@@ -16,38 +16,32 @@ public class GameManager : MonoBehaviour {
     bool isWinningMusicPlaying = false;
 
     public GameObject WallMainObject;
+    private bool isStarted = false;
 
 	// Use this for initialization
 	void Start () {
-        audioSource = GetComponent<AudioSource>();
 
-        GameObject[] imageObjects = GameObject.FindGameObjectsWithTag("Image");
-        images = new List<ImageDeactivator>();
-        foreach (GameObject obj in imageObjects)
-        {
-            images.Add(obj.GetComponent<ImageDeactivator>());
-        }
-        ambientLight.enabled = false;
-
-        Invoke("GameOver", timeToGameOver);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (GameWon())
+        if (isStarted)
         {
-            foreach (WallMover wall in walls)
+            if (GameWon())
             {
-                wall.StartWinningSequence();
-            }
-            ambientLight.enabled = true;
-            floor.GetComponent<Renderer>().material = grass;
+                foreach (WallMover wall in walls)
+                {
+                    wall.StartWinningSequence();
+                }
+                ambientLight.enabled = true;
+                floor.GetComponent<Renderer>().material = grass;
 
-            if (!isWinningMusicPlaying)
-            {
-                isWinningMusicPlaying = true;
-                audioSource.Play();
-                Invoke("DeactivateAllWallsAndImages", 4f);
+                if (!isWinningMusicPlaying)
+                {
+                    isWinningMusicPlaying = true;
+                    audioSource.Play();
+                    Invoke("DeactivateAllWallsAndImages", 4f);
+                }
             }
         }
 	}
@@ -80,5 +74,21 @@ public class GameManager : MonoBehaviour {
         {
             img.SetGameOver();
         }
+    }
+
+    public void StartGame()
+    {
+        isStarted = true;
+        audioSource = GetComponent<AudioSource>();
+
+        GameObject[] imageObjects = GameObject.FindGameObjectsWithTag("Image");
+        images = new List<ImageDeactivator>();
+        foreach (GameObject obj in imageObjects)
+        {
+            images.Add(obj.GetComponent<ImageDeactivator>());
+        }
+        ambientLight.enabled = false;
+
+        Invoke("GameOver", timeToGameOver);
     }
 }
